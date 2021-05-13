@@ -21,10 +21,13 @@ export const fetchCollectionsStartAsync = () => {
     const collectionRef = firestore.collection('collections');
     dispatch(fetchCollectionsStart());
 
-    this.unsubscribeFromSnapShot = collectionRef.onSnapshot(async snapshot => {
+  collectionRef
+    .get()
+    .then(snapshot => {
       const collectionsMap = convertCollectionsSnapshotToMap(snapshot);
       dispatch(fetchCollectionsSuccess(collectionsMap));
-    }).catch(error => dispatch(fetchCollectionsFailure(error.message)));
+    })
+    .catch(error => dispatch(fetchCollectionsFailure(error.message)));
   }
 }
 
